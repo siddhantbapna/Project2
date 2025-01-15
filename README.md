@@ -3,3 +3,5 @@
 set AIPROXY_TOKEN=...
 
 uv run autolysis.py <dataset.csv>
+
+earlier at : https://github.com/siddhant-bapna/Project2/
